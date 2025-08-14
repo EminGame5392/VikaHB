@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Викуся, с Днём Рождения!</title>
-    <link rel="icon" href="img/gojo1.jpg" type="img/jpg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
     <style>
@@ -48,25 +47,17 @@
         }
         @keyframes fall {
             0% {
-                transform: translateY(0) rotate(0deg) translateX(0);
+                transform: translateY(-100px) rotate(0deg) translateX(0);
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(360deg) translateX(calc(var(--random-x) * 100px));
+                transform: translateY(calc(100vh + 100px)) rotate(360deg) translateX(calc(var(--random-x) * 100px));
                 opacity: 0;
             }
         }
         .animate-fall {
             animation: fall 3s linear forwards;
             --random-x: 0;
-        }
-        .image-hover {
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
-        }
-        .image-hover:hover {
-            transform: scale(1.1) rotate(5deg);
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
         }
         .confetti {
             position: absolute;
@@ -76,11 +67,19 @@
             border-radius: 50%;
             z-index: 10;
         }
+        .image-hover {
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3));
+        }
+        .image-hover:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+        }
     </style>
 </head>
 <body class="min-h-screen">
     <section id="hero" class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden" id="falling-container">
+        <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-0 left-0 w-32 h-32 bg-pink-400 rounded-full filter blur-3xl opacity-30"></div>
             <div class="absolute bottom-0 right-0 w-64 h-64 bg-purple-400 rounded-full filter blur-3xl opacity-30"></div>
             <div class="absolute top-1/3 right-1/4 w-48 h-48 bg-indigo-400 rounded-full filter blur-3xl opacity-30"></div>
@@ -140,35 +139,34 @@
             });
         });
 
-        function createFallingElements() {
-            const container = document.getElementById('falling-container');
-            
+        document.getElementById('surpriseBtn').addEventListener('click', function() {
             // Создаем конфетти
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti animate-fall';
-                
-                const colors = ['bg-pink-500', 'bg-purple-500', 'bg-yellow-400', 'bg-blue-400'];
-                const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.classList.add(randomColor);
-                
-                confetti.style.left = `${Math.random() * 100}%`;
-                confetti.style.top = '0';
-                confetti.style.width = `${5 + Math.random() * 10}px`;
-                confetti.style.height = `${5 + Math.random() * 10}px`;
-                confetti.style.borderRadius = `${Math.random() * 50}%`;
-                confetti.style.setProperty('--random-x', Math.random() > 0.5 ? 1 : -1);
-                confetti.style.animationDuration = `${2 + Math.random() * 3}s`;
-                confetti.style.animationDelay = `${Math.random() * 2}s`;
-                
-                container.appendChild(confetti);
-                
+            for (let i = 0; i < 100; i++) {
                 setTimeout(() => {
-                    confetti.remove();
-                }, 5000);
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti animate-fall';
+                    
+                    const colors = ['bg-pink-500', 'bg-purple-500', 'bg-yellow-400', 'bg-blue-400'];
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.classList.add(randomColor);
+                    
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.top = '-10px';
+                    confetti.style.width = `${5 + Math.random() * 10}px`;
+                    confetti.style.height = `${5 + Math.random() * 10}px`;
+                    confetti.style.borderRadius = `${Math.random() * 50}%`;
+                    confetti.style.setProperty('--random-x', (Math.random() > 0.5 ? 1 : -1) * Math.random());
+                    confetti.style.animationDuration = `${2 + Math.random() * 3}s`;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 30);
             }
             
-            // Создаем ножки и органы
+            // Создаем ножки и письки
             for (let i = 0; i < 20; i++) {
                 setTimeout(() => {
                     const elementType = Math.random() > 0.5 ? 'leg' : 'penis';
@@ -178,32 +176,20 @@
                     const size = elementType === 'leg' ? 50 + Math.random() * 80 : 30 + Math.random() * 50;
                     
                     element.style.left = `${Math.random() * 100}%`;
-                    element.style.top = '0';
+                    element.style.top = '-100px';
                     element.style.width = `${size}px`;
                     element.style.height = `${elementType === 'leg' ? size * 1.875 : size * 1.5}px`;
                     element.style.setProperty('--random-x', (Math.random() > 0.5 ? 1 : -1) * Math.random());
                     element.style.animationDuration = `${3 + Math.random() * 2}s`;
                     element.style.animationDelay = `${Math.random() * 0.5}s`;
                     
-                    container.appendChild(element);
+                    document.body.appendChild(element);
                     
                     setTimeout(() => {
                         element.remove();
                     }, 5000);
                 }, i * 200);
             }
-        }
-
-        // Запускаем анимацию при загрузке
-        window.addEventListener('load', function() {
-            setTimeout(createFallingElements, 1000);
-            
-            // Повторяем каждые 5 секунд
-            setInterval(createFallingElements, 5000);
-        });
-
-        document.getElementById('surpriseBtn').addEventListener('click', function() {
-            createFallingElements();
         });
     </script>
 </body>
